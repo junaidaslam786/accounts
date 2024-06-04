@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
   UseGuards,
@@ -27,16 +28,24 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(TokenInterceptor)
-  register(@Body() signUp: SignUp): Promise<User> {
-    return this.authService.register(signUp);
+  async register(@Body() signUp: SignUp): Promise<{ message: string, userId: number }> {
+    const user = await this.authService.register(signUp);
+    if (!user) {
+      throw new HttpException('User registration failed', HttpStatus.BAD_REQUEST);
+    }
+    return {
+      message: 'User registered successfully, please create a company',
+      userId: user.id,
+    };
   }
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(TokenInterceptor)
-  async login(@AuthUser() user: User): Promise<User> {
-    return user;
+  async login(@AuthUser() user: User): Promise<{ user: User, token: string }> {
+    const token = this.authService.signToken(user);
+    return { user, token };
   }
 
   @Get('/me')

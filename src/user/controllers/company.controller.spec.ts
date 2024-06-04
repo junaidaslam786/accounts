@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { createMock } from 'ts-auto-mock';
 
-import { ProfileController } from './profile.controller';
-import { User } from '../entities/user.entity';
+import { CompanyController } from './company.controller';
+import { Company } from '../entities/company.entity';
 import { UserService } from '../services/user.service';
 
-describe('Profile Controller', () => {
-  let controller: ProfileController;
+describe('Company Controller', () => {
+  let controller: CompanyController;
   let mockedUserService: jest.Mocked<UserService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ProfileController],
+      controllers: [CompanyController],
     })
       .useMocker(token => {
         if (Object.is(token, UserService)) {
@@ -20,7 +20,7 @@ describe('Profile Controller', () => {
       })
       .compile();
 
-    controller = module.get<ProfileController>(ProfileController);
+    controller = module.get<CompanyController>(CompanyController);
     mockedUserService = module.get<UserService, jest.Mocked<UserService>>(
       UserService,
     );
@@ -30,19 +30,19 @@ describe('Profile Controller', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should get a profile', async () => {
+  it('should get a company', async () => {
     await expect(controller.get(1)).resolves.toBeDefined();
   });
 
-  it('should update a profile', async () => {
-    const updatesUser = {
-      name: 'Johnny Doe',
+  it('should update a company', async () => {
+    const updatesCompany = {
+      name: 'Tech Innovators',
     };
 
-    mockedUserService.update.mockResolvedValueOnce(
-      createMock<User>({ name: updatesUser.name }),
+    mockedUserService.updateCompany.mockResolvedValueOnce(
+      createMock<Company>({ name: updatesCompany.name }),
     );
 
-    await expect(controller.update(1, updatesUser)).resolves.toBeDefined();
+    await expect(controller.update(1, updatesCompany)).resolves.toBeDefined();
   });
 });

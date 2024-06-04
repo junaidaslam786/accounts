@@ -20,7 +20,7 @@ export class AuthService {
     return user;
   }
 
-  async login(email: string, password: string): Promise<User> {
+  async login(email: string, password: string): Promise<{ user: User, token: string }> {
     let user: User;
 
     try {
@@ -37,7 +37,8 @@ export class AuthService {
       );
     }
 
-    return user;
+    const token = this.signToken(user);
+    return { user, token };
   }
 
   async verifyPayload(payload: JwtPayload): Promise<User> {

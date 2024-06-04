@@ -8,7 +8,9 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   BeforeUpdate,
+  OneToOne,
 } from 'typeorm';
+import { Company } from './company.entity';
 
 @Entity()
 export class User {
@@ -30,6 +32,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => Company, company => company.user)
+  company: Company;
 
   constructor(data: Partial<User> = {}) {
     Object.assign(this, data);
