@@ -5,9 +5,9 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { SessionSerializer } from './session.serializer';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { SessionSerializer } from './session.serializer';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     JwtModule.register({
       secret: process.env.APP_SECRET,
       signOptions: {
-        expiresIn: '1d',
+        expiresIn: '60m',
         algorithm: 'HS384',
       },
       verifyOptions: {

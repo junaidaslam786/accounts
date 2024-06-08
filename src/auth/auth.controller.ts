@@ -17,8 +17,8 @@ import { AuthService } from './auth.service';
 import { SignUp } from './dto/sign-up.dto';
 import { JWTAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { SessionAuthGuard } from './guards/session-auth.guard';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { SessionAuthGuard } from './guards/session-auth.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)

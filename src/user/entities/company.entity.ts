@@ -11,6 +11,9 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Account } from '../../account/entities/account.entity';
+import { Transaction } from '../../transaction/entities/transaction.entity';
+import { Contact } from 'src/contact/entities/contact.entity';
 
 @Entity('company')
 export class Company {
@@ -39,5 +42,12 @@ export class Company {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  // Define other relationships here
+  @OneToMany(() => Account, account => account.company)
+  accounts: Account[];
+
+  @OneToMany(() => Transaction, transaction => transaction.company)
+  transactions: Transaction[];
+
+  @OneToMany(() => Contact, contact => contact.company) // Add this line
+  contacts: Contact[];
 }

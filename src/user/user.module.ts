@@ -11,6 +11,6 @@ import { Company } from './entities/company.entity'; // Update this import
   imports: [TypeOrmModule.forFeature([User, Company])], // Update Profile to Company
   controllers: [CompanyController], // Update ProfileController to CompanyController
   providers: [UserService, IsUserAlreadyExist],
-  exports: [UserService],
+  exports: [TypeOrmModule, UserService],
 })
 export class UserModule {}

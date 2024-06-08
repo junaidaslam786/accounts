@@ -16,12 +16,11 @@ import {
 import { UserService } from '../services/user.service';
 import { CompanyUpdate } from '../dto/company-update.dto';
 import { JWTAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { SessionAuthGuard } from '../../auth/guards/session-auth.guard';
 import { Company } from '../entities/company.entity';
 import { CreateCompanyDto } from '../dto/create-company.dto';
 
 @Controller('company')
-@UseGuards(JWTAuthGuard, SessionAuthGuard)
+@UseGuards(JWTAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class CompanyController {
   constructor(private readonly userService: UserService) {}
