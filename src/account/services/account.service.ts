@@ -103,8 +103,8 @@ export class AccountService {
     let totalCredit = 0;
 
     journalEntries.forEach(entry => {
-      totalDebit += entry.debit;
-      totalCredit += entry.credit;
+      totalDebit += Number(entry.debit);
+      totalCredit += Number(entry.credit);
     });
 
     const initialBalance = account.initialBalanceType === 'Debit' ? account.initialBalance : -account.initialBalance;
