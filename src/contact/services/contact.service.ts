@@ -5,7 +5,7 @@ import { Contact } from '../entities/contact.entity';
 import { CreateContactDto } from '../dto/create-contact.dto';
 import { UpdateContactDto } from '../dto/update-contact.dto';
 import { AccountService } from '../../account/services/account.service';
-import { Account } from 'src/account/entities/account.entity';
+// import { Account } from 'src/account/entities/account.entity';
 import { Company } from 'src/user/entities/company.entity';
 import { CreateAccountDto } from 'src/account/dto/create-account.dto';
 
@@ -20,13 +20,16 @@ export class ContactService {
   ) {}
 
   async create(createContactDto: CreateContactDto): Promise<Contact> {
-    const contact = this.contactRepository.create(createContactDto);
-    const savedContact = await this.contactRepository.save(contact);
-
     const company = await this.companyRepository.findOne({ where: { id: createContactDto.companyId } });
     if (!company) {
       throw new NotFoundException(`Company with ID ${createContactDto.companyId} not found`);
     }
+
+    const contact = this.contactRepository.create({
+      ...createContactDto,
+      company, // associate company with the contact
+    });
+    const savedContact = await this.contactRepository.save(contact);
 
     const accountDto: CreateAccountDto = {
       name: `${savedContact.name} Account`,

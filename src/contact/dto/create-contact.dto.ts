@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, IsNumber, IsInt } from 'class-validator';
 
 export class CreateContactDto {
   @IsNotEmpty()
@@ -19,5 +19,6 @@ export class CreateContactDto {
 
   @IsNotEmpty()
   @IsNumber()
+  @IsInt()
   companyId: number;
 }
