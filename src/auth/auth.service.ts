@@ -24,7 +24,10 @@ export class AuthService {
     let user: User;
 
     try {
-      user = await this.userService.findOne({ where: { email } });
+      user = await this.userService.findOne({ 
+        where: { email },
+        relations: ['company'], // Include the company relation
+      });
     } catch (err) {
       throw new UnauthorizedException(
         `There isn't any user with email: ${email}`,

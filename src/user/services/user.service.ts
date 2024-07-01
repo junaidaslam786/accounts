@@ -24,8 +24,11 @@ export class UserService {
   }
 
   async findOne(where: FindOneOptions<User>): Promise<User> {
-    const user = await this.userRepository.findOne(where);
-
+    const user = await this.userRepository.findOne({
+      ...where,
+      relations: ['company'],  // Include the company relation
+    });
+    
     if (!user) {
       throw new NotFoundException(
         `There isn't any user with identifier: ${where}`,

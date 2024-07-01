@@ -6,6 +6,8 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
+  Param,
+  ParseIntPipe,
   Post,
   UseGuards,
   UseInterceptors,
@@ -19,11 +21,14 @@ import { JWTAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { SessionAuthGuard } from './guards/session-auth.guard';
+import { UserService } from 'src/user/services/user.service';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
@@ -48,9 +53,13 @@ export class AuthController {
     return { user, token };
   }
 
-  @Get('/me')
+  @Get('/user/:userId')
   @UseGuards(SessionAuthGuard, JWTAuthGuard)
-  me(@AuthUser() user: User): User {
+  async getUserById(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
+    const user = await this.userService.findOne({
+      where: { id: userId },
+      relations: ['company'], // Make sure the company is eagerly loaded
+    });
     return user;
   }
 }
