@@ -28,11 +28,13 @@ export class AccountService {
       throw new NotFoundException(`Company with ID ${createAccountDto.companyId} not found`);
     }
 
-    const contact = await this.contactRepository.findOne({ where: { id: createAccountDto.contactId } });
-    if (!contact) {
-      throw new NotFoundException(`Contact with ID ${createAccountDto.contactId} not found`);
+    let contact: Contact | null = null;
+    if (createAccountDto.contactId) {
+      contact = await this.contactRepository.findOne({ where: { id: createAccountDto.contactId } });
+      if (!contact) {
+        throw new NotFoundException(`Contact with ID ${createAccountDto.contactId} not found`);
+      }
     }
-
     const account = this.accountRepository.create({
       ...createAccountDto,
       company,

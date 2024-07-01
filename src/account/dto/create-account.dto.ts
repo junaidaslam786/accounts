@@ -1,4 +1,4 @@
-import { IsIn, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateAccountDto {
   @IsNotEmpty()
@@ -21,7 +21,7 @@ export class CreateAccountDto {
   @IsNumber()
   companyId: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
-  contactId: number; // New field for contact (customer/supplier)
+  contactId?: number; // New field for contact (customer/supplier)
 }
